@@ -1,84 +1,178 @@
 import pandas as pd
 import streamlit as st
 
-# ضبط إعدادات الصفحة
+# 1. ضبط إعدادات الصفحة والتصميم العريض
 st.set_page_config(
-    page_title="منصة تحليل المتاجر والمنافسين", page_icon="📊", layout="wide"
+    page_title="StoreAnalyzer | المنصة العالمية لتحليل المتاجر والمنافسين",
+    page_icon="⚡",
+    layout="wide",
+    initial_sidebar_state="expanded",
 )
 
-# عنوان الموقع الرئيسي
-st.title("📊 منصة تحليل المتاجر والمنافسين")
+# 2. الهيدر والعنوان الرئيسي
+st.title("⚡ StoreAnalyzer")
 st.subheader(
-    "الأداة البرمجية الأولى للشركات والمتاجر الإلكترونية لمتابعة أسعار"
-    " المنافسين واكتشاف المنتجات الأكثر مبيعاً."
+    "المنصة البرمجية الشاملة للذكاء التجاري وتحليل المنافسين في التجارة"
+    " الإلكترونية"
 )
 
-# شريط إيجار المنصة
-st.success("💡 هذه المنصة متاحة للتأجير الفوري للشركات والمتاجر بـ 200$ شهرياً")
+# شريط حالة الاشتراك والتأجير
+st.success(
+    "💡 هذه المنصة متاحة للتأجير الحصري للمتاجر والشركات بـ 200$ شهرياً | شاملة"
+    " جميع الأدوات والتحليلات"
+)
 
 st.markdown("---")
 
-# عرض مميزات الأداة
-col1, col2, col3 = st.columns(3)
-
-with col1:
-  st.markdown("### 🔍 رصد المنافسين")
-  st.write(
-      "تتبع أسعار منتجات المنافسين في السوق وتلقَّ تنبيهات فورية عند تغيير"
-      " الأسعار."
-  )
-
-with col2:
-  st.markdown("### 🚀 صائد المنتجات")
-  st.write("خوارزمية ذكية تكتشف المنتجات الأكثر طلباً في السوق قبل الجميع.")
-
-with col3:
-  st.markdown("### 📊 تحليل الأرباح")
-  st.write(
-      "حساب دقيق لصافي الأرباح وتكاليف الإعلانات والشحن لتضمن أعلى عائد."
-  )
-
-st.markdown("---")
-
-# تجربة أداة التحليل (معاينة)
-st.header("🎯 تجربة تحليل متجر أو منتج")
-store_url = st.text_input(
-    "ادخل رابط المتجر أو اسم المنتج للمعاينة:",
-    placeholder="https://store-example.com",
+# 3. الشريط الجانبي (Sidebar) للتنقل بين أدوات المنصة
+st.sidebar.title("🛠️ لوحة أدوات المنصة")
+tool_choice = st.sidebar.radio(
+    "اختر الأداة المطلوبة:",
+    [
+        "📊 رادار المنافسين والأسعار",
+        "🚀 صائد المنتجات الرابحة",
+        "💰 حاسبة الأرباح والإعلانات",
+        "⭐ محلل آراء وتقييمات العملاء",
+    ],
 )
 
-if st.button("بدء التحليل الفوري 🚀"):
-  if store_url:
-    st.info(f"جاري جلب بيانات المتجر وتحليل المنافسين لـ: {store_url} ...")
+# 4. عرض الأداة المحددة بناءً على اختيار المستخدم
+if tool_choice == "📊 رادار المنافسين والأسعار":
+  st.header("📊 رادار تتبع المنافسين والأسعار اللحظي")
+  st.write(
+      "ادخل رابط المتجر المنافس لمراقبة تغييرات الأسعار والمنتجات الجديدة"
+      " أوتوماتيكياً:"
+  )
 
-    # جدول بيانات وهمي تجريبي للعرض
-    data = {
-        "اسم المنتج": ["منتج أ", "منتج ب", "منتج ج"],
-        "سعر المنافس": ["$25", "$40", "$15"],
-        "حالة الطلب": ["عالي جداً 🔥", "متوسط 📈", "ممتاز 🌟"],
-        "هامش الربح المتوقع": ["35%", "40%", "50%"],
+  col_input, col_btn = st.columns([3, 1])
+  with col_input:
+    store_link = st.text_input(
+        "رابط المتجر المنافس:",
+        placeholder="https://competitor-store.com",
+        key="comp_link",
+    )
+  with col_btn:
+    st.write("")
+    st.write("")
+    analyze_btn = st.button("بدء الرصد الفوري 🔍")
+
+  if analyze_btn:
+    if store_link:
+      st.info(f"جاري فحص وحصر منتجات المتجر: {store_link}")
+      demo_data = {
+          "المنتج": [
+              "سماعة لاسلكية برو",
+              "ساعة ذكية مقاومة للماء",
+              "حامل موبايل ذكي",
+          ],
+          "سعر المنافس": ["$35", "$60", "$20"],
+          "التغير خلال 24h": ["-5%", "ثابت", "+10%"],
+          "حالة المخزون": ["متوفر", "وشيك على الانتهاء ⚠️", "متوفر"],
+      }
+      st.dataframe(pd.DataFrame(demo_data), use_container_width=True)
+    else:
+      st.warning("يرجى إدخال رابط المتجر أولاً.")
+
+elif tool_choice == "🚀 صائد المنتجات الرابحة":
+  st.header("🚀 صائد المنتجات الرابحة (Winning Products)")
+  st.write(
+      "الخوارزمية الذكية لاكتشاف المنتجات الأكثر طلباً والأعلى ربحية في السوق"
+  )
+
+  category = st.selectbox(
+      "اختر التصنيف التجاري:",
+      ["الإلكترونيات", "الملابس والأزياء", "المنزل والمطبخ", "العناية والتجميل"],
+  )
+
+  if st.button("استكشاف المنتجات الرابحة 🔥"):
+    st.success(f"أفضل المنتجات الرابحة حالياً في تصنيف [{category}]:")
+    winning_data = {
+        "المنتج الرابح": [
+            "مكواة بخار محمولة",
+            "مصباح مكتب ذكي",
+            "حقيبة ظهر مقاومة للماء",
+        ],
+        "حجم الطلب": ["عالي جداً 🔥", "ممتاز 🌟", "ارتفاع ملحوظ 📈"],
+        "متوسط سعر التكلفة": ["$8", "$12", "$10"],
+        "سعر البيع الموصى به": ["$28", "$38", "$32"],
+        "هامش الربح المتوقع": ["71%", "68%", "68%"],
     }
-    df = pd.DataFrame(data)
-    st.dataframe(df, use_container_width=True)
-  else:
-    st.warning("يرجى إدخال رابط المتجر أولاً.")
+    st.dataframe(pd.DataFrame(winning_data), use_container_width=True)
 
-st.markdown("---")
+elif tool_choice == "💰 حاسبة الأرباح والإعلانات":
+  st.header("💰 حاسبة صافي الأرباح والعائد على الإعلانات (ROAS)")
+  st.write("احسب صافي أرباحك بالملليمتر قبل البدء في الحملات الإعلانية:")
 
-# قسم التواصل للتأجير ببياناتك المباشرة
-st.header("📞 هل تريد تأجير هذه الأداة لشركتك؟")
-st.write(
-    "تواصل مع المالك المباشر فوراً لحجز إيجار المنصة واستلام حساب الدخول:"
-)
+  c1, c2, c3 = st.columns(3)
+  with c1:
+    cost_price = st.number_input("تكلفة شراء القطعة ($):", value=10.0)
+  with c2:
+    sell_price = st.number_input("سعر بيع القطعة ($):", value=35.0)
+  with c3:
+    ad_cost = st.number_input("تكلفة الإعلان المتوقعة للقطعة ($):", value=8.0)
 
-c1, c2 = st.columns(2)
+  shipping_cost = st.number_input("تكلفة الشحن والتغليف ($):", value=4.0)
 
-with c1:
-  st.link_button(
-      "💬 تواصل عبر تيليجرام (@Anas55355)", "https://t.me/Anas55355"
+  net_profit = sell_price - (cost_price + ad_cost + shipping_cost)
+  margin = (net_profit / sell_price) * 100 if sell_price > 0 else 0
+
+  st.markdown("---")
+  res_col1, res_col2 = st.columns(2)
+  with res_col1:
+    st.metric(label="صافي الربح للقطعة", value=f"${net_profit:.2f}")
+  with res_col2:
+    st.metric(label="نسبة هامش الربح", value=f"{margin:.1f}%")
+
+elif tool_choice == "⭐ محلل آراء وتقييمات العملاء":
+  st.header("⭐ محلل نقاط ضعف المنافسين من التقييمات")
+  st.write(
+      "استخراج عيوب منتجات المنافسين من تقييمات المشترين لتفاديها وتطوير"
+      " منتجك:"
   )
 
-with c2:
+  prod_review_link = st.text_input(
+      "رابط صفحة منتج المنافس:", placeholder="https://store.com/product-page"
+  )
+  if st.button("تحليل التقييمات 🧐"):
+    if prod_review_link:
+      st.info("جاري تحليل التقييمات وآراء العملاء...")
+      review_summary = {
+          "أبرز الشكاوى (نقاط الضعف)": [
+              "بطء بطارية الجهاز",
+              "التغليف غير محكم",
+              "تأخر الشحن",
+          ],
+          "نسبة التكرار": ["42%", "28%", "15%"],
+          "التوصية": [
+              "توفير بطارية أكبر سعة في منتجك",
+              "استخدام تغليف كرتوني مقوى",
+              "التعاقد مع شركة شحن أسرع",
+          ],
+      }
+      st.dataframe(pd.DataFrame(review_summary), use_container_width=True)
+    else:
+      st.warning("يرجى إدخال رابط المنتج أولاً.")
+
+# 5. قسم التواصل المباشر لتأجير المنصة
+st.markdown("---")
+st.header("📞 هل تريد تأجير هذه المنصة بالكامل لشركتك؟")
+st.write(
+    "تواصل مع المالك المباشر فوراً لحجز إيجار المنصة ($200 شهرياً) واستلام حساب"
+    " الدخول الخاص بك:"
+)
+
+contact_col1, contact_col2 = st.columns(2)
+
+with contact_col1:
   st.link_button(
-      "✉️ إرسال بريد إلكتروني (Gmail)", "mailto:Anassadek5535@gmail.com"
+      "💬 تواصل عبر تيليجرام (@Anas55355)",
+      "https://t.me/Anas55355",
+      use_container_width=True,
+  )
+
+with contact_col2:
+  st.link_button(
+      "✉️ إرسال بريد إلكتروني (Gmail)",
+      "mailto:Anassadek5535@gmail.com",
+      use_container_width=True,
   )
