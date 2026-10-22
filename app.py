@@ -153,7 +153,7 @@ elif tool_choice == "⭐ محلل آراء وتقييمات العملاء":
     else:
       st.warning("يرجى إدخال رابط المنتج أولاً.")
 
-# 5. قسم التواصل المباشر لتأجير المنصة
+# 5. قسم التواصل والتأجير المباشر ببياناتك (مُحدث وآمن 100%)
 st.markdown("---")
 st.header("📞 هل تريد تأجير هذه المنصة بالكامل لشركتك؟")
 st.write(
@@ -172,7 +172,10 @@ with contact_col1:
 
 with contact_col2:
   st.link_button(
-      "✉️ إرسال بريد إلكتروني (Gmail)",
-      "mailto:Anassadek5535@gmail.com",
+      "✉️ مراسلة فورية عبر الجيميل (Gmail)",
+      (
+          "https://mail.google.com/mail/?view=cm&fs=1&to=Anassadek5535@gmail.com&su=طلب"
+          " إيجار منصة StoreAnalyzer"
+      ),
       use_container_width=True,
   )
